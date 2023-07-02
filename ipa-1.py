@@ -33,12 +33,11 @@ def savings(gross_pay, tax_rate, expenses):
     '''
     # Replace `pass` with your code.
     # Stay within the function. Only use the parameters as input. The function should return your answer.
-    gross_pay_in_centavos = gross_pay * 100 # this is assuming that all values inputted is in pesos
-    expenses_in_centavos = expenses * 100
-    tax_amount = int(gross_pay_in_centavos * tax_rate)  
-    after_tax_pay = gross_pay_in_centavos - tax_amount
-    savings = after_tax_pay - expenses_in_centavos
+    tax_amount = int(gross_pay * tax_rate)  
+    after_tax_pay = gross_pay - tax_amount
+    savings = after_tax_pay - expenses
     return savings
+    
 
 def material_waste(total_material, material_units, num_jobs, job_consumption):
     '''Material Waste.
