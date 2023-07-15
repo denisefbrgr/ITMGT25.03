@@ -41,49 +41,20 @@ def relationship_status(from_member, to_member, social_graph):
     '''
     # Replace `pass` with your code.
     # Stay within the function. Only use the parameters as input. The function should return your answer.
-    social_graph = {
-        "@bongolpoc": {"first_name": "Joselito",
-                        "last_name": "Olpoc",
-                        "following": []
-                        },
-        "@joaquin": {"first_name": "Joaquin",
-                      "last_name": "Gonzales",
-                      "following": ["@chums", "@jobenilagan"]
-                      },
-        "@chums": {"first_name": "Matthew",
-                    "last_name": "Uy",
-                    "following": ["@bongolpoc", "@miketan", "@rudyang", "@joeilagan"]
-                    },
-        "@jobenilagan": {"first_name": "Joben",
-                          "last_name": "Ilagan",
-                          "following": ["@eeebeee", "@joeilagan", "@chums", "@joaquin"]
-                          },
-        "@joeilagan": {"first_name": "Joe",
-                        "last_name": "Ilagan",
-                        "following": ["@eeebeee", "@jobenilagan", "@chums"]
-                        },
-        "@eeebeee": {"first_name": "Elizabeth",
-                      "last_name": "Ilagan",
-                      "following": ["@jobenilagan", "@joeilagan"]
-                      }
-    }
+    # Check if from_member follows to_member
+    if from_member in social_graph.get(to_member, {}).get("following", []):
+        # Check if to_member also follows from_member, making them friends
+        if to_member in social_graph.get(from_member, {}).get("following", []):
+            return "friends"
+        return "followed by"
 
-    from_member_data = social_graph.get(from_member)
-    to_member_data = social_graph.get(to_member)
+    # Check if to_member follows from_member
+    if to_member in social_graph.get(from_member, {}).get("following", []):
+        return "follower"
 
-    from_member_following_list = from_member_data['following']
-    to_member_following_list = to_member_data['following']
+    # If none of the above conditions are met, there is no relationship
+    return "no relationship"
 
-    if to_member in from_member_following_list and from_member in to_member_following_list:
-        relationship_status = "friends"
-    elif to_member in from_member_following_list:
-        relationship_status = "followed by"
-    elif from_member in to_member_following_list:
-        relationship_status = "follower"
-    else:
-        relationship_status = "no relationship"
-
-    return relationship_status
 
 
 def tic_tac_toe(board):
@@ -112,62 +83,41 @@ def tic_tac_toe(board):
     '''
     # Replace `pass` with your code.
     # Stay within the function. Only use the parameters as input. The function should return your answer.
-    board1 = [
-        ['X','X','O'],
-        ['O','X','O'],
-        ['O','','X'],
-    ]
-
-    board2 = [
-        ['X','X','O'],
-        ['O','X','O'],
-        ['','O','X'],
-    ]
-
-    board3 = [
-        ['O','X','O'],
-        ['','O','X'],
-        ['X','X','O'],
-    ]
-
-    board4 = [
-        ['X','X','X'],
-        ['O','X','O'],
-        ['O','','O'],
-    ]
-
-    board5 = [
-        ['X','X','O'],
-        ['O','X','O'],
-        ['X','','O'],
-    ]
-
-    board6 = [
-        ['X','X','O'],
-        ['O','X','O'],
-        ['X','',''],
-    ]
-
-    board7 = [
-        ['X','X','O',''],
-        ['O','X','O','O'],
-        ['X','','','O'],
-        ['O','X','','']
-    ]
-    
+    # Check rows
     for row in board:
-        if len(set(row)) == 1:
-            return row[0]
+        if row == ['X', 'X', 'X'] or row == ['X', 'X', 'X','X'] or row == ['X', 'X', 'X', 'X', 'X'] or row == ['X', 'X', 'X', 'X', 'X', 'X']:
+            return "X"
+        elif row == ['O', 'O', 'O'] or row == ['O', 'O', 'O', 'O'] or row == ['O', 'O', 'O', 'O', 'O'] or row == ['O', 'O', 'O', 'O','O','O'] :
+            return "O"
 
+    # Check columns
     for col in range(len(board[0])):
-        if len(set([board[row][col] for row in range(len(board))])) == 1:
-            return board[0][col]
+        if all(board[row][col] == 'X' for row in range(len(board))):
+            return "X"
+        elif all(board[row][col] == 'O' for row in range(len(board))):
+            return "O"
 
-    if len(set([board[i][i] for i in range(len(board))])) == 1:
-        return board[0][0]
-
-    if len(set([board[i][len(board)-1-i] for i in range(len(board))])) == 1:
-        return board[0][len(board)-1]
+    # Check diagonals
+    if len(board[0])==3:
+        if board[0][0] == board[1][1] == board[2][2] == 'X' or board[0][2] == board[1][1] == board[2][0] == 'X':
+            return "X"
+        elif board[0][0] == board[1][1] == board[2][2] == 'O' or board[0][2] == board[1][1] == board[2][0] == 'O':
+            return "O"
+    elif len(board[0])==4:
+        if board[0][0] == board[1][1] == board[2][2] == board[3][3]=='X' or board[0][3] == board[1][2] == board[2][1] == board[3][0]=='X':
+            return "X"
+        elif board[0][0] == board[1][1] == board[2][2] == board[3][3]=='O' or board[0][3] == board[1][2] == board[2][1] == board[3][0]=='O':
+            return "O"
+    elif len(board[0])==5:
+        if board[0][0] == board[1][1] == board[2][2] == board[3][3]==board[4][4]=='X' or board[0][4] == board[1][3] == board[2][2] == board[3][1]==board[4][0]=='X':
+            return "X"
+        elif board[0][0] == board[1][1] == board[2][2] == board[3][3]==board[4][4]=='O' or board[0][4] == board[1][3] == board[2][2] == board[3][1]==board[4][0]=='O':
+            return "O"
+    elif len(board[0])==6:
+        if board[0][0] == board[1][1] == board[2][2] == board[3][3]==board[4][4]==board[5][5]=='X' or board[0][5] == board[1][4] == board[2][3] == board[3][2]==board[4][1]==board[5][0]=='X':
+            return "X"
+        elif board[0][0] == board[1][1] == board[2][2] == board[3][3]==board[4][4]==board[5][5]=='O' or board[0][5] == board[1][4] == board[2][3] == board[3][2]==board[4][1]==board[5][0]=='O':
+            return "O"
 
     return "NO WINNER"
 
@@ -203,50 +153,49 @@ def eta(first_stop, second_stop, route_map):
     '''
     # Replace `pass` with your code.
     # Stay within the function. Only use the parameters as input. The function should return your answer.
-    first_stop_data = {
-        ("upd", "admu"): {
-            "travel_time_mins": 10
-        },
-        ("admu", "dlsu"): {
-            "travel_time_mins": 35
-        },
-        ("dlsu", "upd"): {
-            "travel_time_mins": 55
-        }
-    }
 
-    second_stop_data = {
-        ('a1', 'a2'): {
-            'travel_time_mins': 10
-        },
-        ('a2', 'b1'): {
-            'travel_time_mins': 10230
-        },
-        ('b1', 'a1'): {
-            'travel_time_mins': 1
-        }
-    }
+    journey =(first_stop, second_stop)
+    first_stop=journey[0]
+    second_stop=journey[1]
+    traveltime=0
+    new_map={}
+    index_start=0
+    index_end=0
+   
+    counter=0
+    for route in route_map.keys():
+        counter+=1
+        if route[0]==first_stop:
+            #find the index
+            index_start+=counter
+        if route[1]==second_stop:
+            index_end+=counter
 
-    route_map = {}
+    if index_start<=index_end:
+        routes = list(route_map.items())
+        subroute = routes[index_start - 1:index_end]
+        new_map.update(subroute)
 
-    for leg, data in first_stop_data.items():
-        route_map[leg[0]] = data
+        for item in new_map.items():
+            mins = item[1]["travel_time_mins"]
+            traveltime += mins
 
-    for leg, data in second_stop_data.items():
-        route_map[leg[0] if leg[0] in second_stop else leg[1]] = data
+        return traveltime
+    elif index_start>index_end:
+        routes = list(route_map.items())
+        index_end=index_end+len(routes)
+        subroute = routes[index_start - 1:len(routes)]
+        new_map.update(subroute)
+        excess_subroute=routes[0:index_end-len(routes)]
+        new_map.update(excess_subroute)
+        
+        for item in new_map.items():
+            mins = item[1]["travel_time_mins"]
+            traveltime += mins
+            
+        return traveltime
 
-    travel_time_first_stop = None
-    for key in first_stop_data:
-        if key[0] == first_stop:
-            travel_time_first_stop = first_stop_data[key]['travel_time_mins']
-            break
 
-    travel_time_second_stop = None
-    for key in second_stop_data:
-        if key[1] == second_stop:
-            travel_time_second_stop = second_stop_data[key]['travel_time_mins']
-            break
 
-    total_travel_time = travel_time_first_stop + travel_time_second_stop
 
-    return total_travel_time
+
